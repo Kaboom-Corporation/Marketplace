@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/consts.dart';
+import 'package:marketplace/pages/register/register_cubit.dart';
+import 'package:marketplace/show_alert.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -11,7 +14,7 @@ class RegisterPage extends StatelessWidget {
     TextEditingController _lastNameController = TextEditingController();
     TextEditingController _organisationNameController = TextEditingController();
     TextEditingController _itinController = TextEditingController();
-    TextEditingController _loginController = TextEditingController();
+    TextEditingController _emailController = TextEditingController();
     TextEditingController _password1Controller = TextEditingController();
     TextEditingController _password2Controller = TextEditingController();
 
@@ -84,7 +87,7 @@ class RegisterPage extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    RegistrationField(label: 'Логин', controller: _loginController),
+                    RegistrationField(label: 'Почта', controller: _emailController),
                     RegistrationField(label: 'Пароль', controller: _password1Controller, obscure: true),
                     RegistrationField(label: 'Повторите пароль', controller: _password2Controller, obscure: true),
                     const EmptyField(),
@@ -98,19 +101,45 @@ class RegisterPage extends StatelessWidget {
                               fontSize: 20,
                             )),
                         Container(height: 10),
-                        Container(
-                          height: 45,
-                          width: 400,
-                          decoration: BoxDecoration(
-                              color: const Color.fromRGBO(96, 89, 238, 1), borderRadius: BorderRadius.circular(12)),
-                          child: const Center(
-                            child: Text('Подтвердить заявку',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20,
-                                )),
+                        GestureDetector(
+                          onTap: () {
+                            if (_password1Controller.text != _password2Controller.text) {
+                              showAlert('Пароли не соврадают');
+                            } else if (_surnameController.text.isEmpty) {
+                              showAlert('Фамилия не заполнена');
+                            } else if (_nameController.text.isEmpty) {
+                              showAlert('Имя не заполнено');
+                            } else if (_lastNameController.text.isEmpty) {
+                              showAlert('Отчество не заполно');
+                            } else if (_organisationNameController.text.isEmpty) {
+                              showAlert('Название организации не заполнено');
+                            } else if (_itinController.text.isEmpty) {
+                              showAlert('ИНН не заполнен');
+                            } else {
+                              BlocProvider.of<RegisterCubit>(context).register(
+                                  email: _emailController.text,
+                                  password: _password1Controller.text,
+                                  surname: _surnameController.text,
+                                  name: _nameController.text,
+                                  lastName: _lastNameController.text,
+                                  organisationName: _organisationNameController.text,
+                                  itin: _itinController.text);
+                            }
+                          },
+                          child: Container(
+                            height: 45,
+                            width: 400,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(96, 89, 238, 1), borderRadius: BorderRadius.circular(12)),
+                            child: const Center(
+                              child: Text('Подтвердить заявку',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                  )),
+                            ),
                           ),
                         ),
                       ],

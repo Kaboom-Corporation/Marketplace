@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/consts.dart';
+import 'package:marketplace/pages/auth/auth_cubit.dart';
+import 'package:marketplace/show_alert.dart';
 import 'package:video_player/video_player.dart';
 
 class AuthPage extends StatefulWidget {
@@ -10,7 +13,7 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  TextEditingController _loginController = TextEditingController();
+  TextEditingController _mailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
   final _vid2controller = VideoPlayerController.network(
@@ -107,7 +110,7 @@ class _AuthPageState extends State<AuthPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Логин',
+                    const Text('Логин (почта)',
                         textAlign: TextAlign.center,
                         style:
                             TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: Color.fromRGBO(49, 49, 49, 1))),
@@ -121,7 +124,7 @@ class _AuthPageState extends State<AuthPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Center(
                         child: TextField(
-                          controller: _loginController,
+                          controller: _mailController,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
@@ -162,21 +165,28 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                     ),
                     Container(height: 20),
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(96, 89, 238, 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: const Center(
-                        child: Text('Войти',
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<AuthCubit>(context).logIn(_mailController.text, _passwordController.text);
+                      },
+                      child: Container(
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(96, 89, 238, 1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: const Center(
+                          child: Text(
+                            'Войти',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                               fontSize: 20,
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                     Container(height: 20),
@@ -196,7 +206,9 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
                           child: const Text(
                             'Регистрация',
                             textAlign: TextAlign.center,
