@@ -1,5 +1,5 @@
 name: marketplace
-description: A new Flutter project.
+description: Торги
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -26,6 +26,7 @@ dependencies:
   firebase_core: ^1.3.0
   cloud_firestore: ^2.2.2
   firebase_auth: ^1.4.1
+  firebase_storage: ^10.2.12
 
 dev_dependencies:
   flutter_test:
@@ -67,4 +68,11 @@ flutter:
         - asset: assets/fonts/Montserrat-ExtraBold.ttf
           weight: 800
 
+flutter_icons:
+  image_path: "assets/Logo_3.png"
+  android: true
+  ios: true
+  web: true
+  # optionally, as transparency is not allowed on app store
+  # remove_alpha_ios: true
 

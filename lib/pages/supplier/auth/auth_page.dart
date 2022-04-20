@@ -14,27 +14,12 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  TextEditingController _mailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
-  final _vid2controller = VideoPlayerController.network(
-      'https://firebasestorage.googleapis.com/v0/b/feed-b1241.appspot.com/o/Comp_1-quicktime(2).mov?alt=media&token=d2ff8769-5052-4db7-8ed0-01f72780553a');
+  final TextEditingController _mailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
-    _initVideos();
-  }
-
-  _initVideos() async {
-    await _vid2controller.initialize();
-    await _vid2controller.setVolume(0);
-    await _vid2controller.setLooping(true);
-
-    setState(() {});
-
-    _vid2controller.play();
   }
 
   @override
@@ -46,16 +31,21 @@ class _AuthPageState extends State<AuthPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Row()),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // AspectRatio(aspectRatio: _vid2controller.value.aspectRatio, child: VideoPlayer(_vid2controller)),
-                  ],
-                ),
+              Expanded(child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(child: Image.network(blueWaveUrl))
+                ],
+              )
               ),
-            ],
+              Expanded(child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(child: Image.network(redWaveUrl))
+                ],
+              )
+            ),
+            ]
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,7 +71,7 @@ class _AuthPageState extends State<AuthPage> {
                       SizedBox(
                         width: 62,
                         height: 62,
-                        child: Image.asset(logoPath, isAntiAlias: true, fit: BoxFit.contain),
+                        child: Image.network(logoUrlPath, isAntiAlias: true, fit: BoxFit.contain),
                       ),
                       Container(width: 3),
                       const Text('Торги', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 47))
