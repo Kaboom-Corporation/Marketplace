@@ -34,7 +34,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           "itin": itin,
         });
 
-        navigatorKey.currentState!.pushNamed('/test');
+        navigatorKey.currentState!.pushNamed('/procurements');
       }
     } on FirebaseAuthException catch (e) {
       showAlert(e.message!);

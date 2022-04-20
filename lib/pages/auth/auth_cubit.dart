@@ -18,7 +18,7 @@ class AuthCubit extends Cubit<AuthState> {
       await auth.signInWithEmailAndPassword(email: email, password: password);
 
       if (auth.currentUser != null) {
-        navigatorKey.currentState!.pushNamed('/test');
+        navigatorKey.currentState!.pushNamed('/procurements');
       }
     } on FirebaseAuthException catch (e) {
       showAlert(e.message!);
