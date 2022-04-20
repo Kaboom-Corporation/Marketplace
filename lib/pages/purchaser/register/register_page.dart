@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/consts.dart';
-import 'package:marketplace/pages/register/register_cubit.dart';
+import 'package:marketplace/pages/purchaser/register/register_cubit.dart';
 import 'package:marketplace/show_alert.dart';
 
 class RegisterPage extends StatelessWidget {

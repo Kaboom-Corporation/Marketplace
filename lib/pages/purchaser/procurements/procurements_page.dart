@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:marketplace/main.dart';
-import 'package:marketplace/pages/procurements/procurements_cubit.dart';
-import 'package:marketplace/pages/procurements/procurements_states.dart';
+import 'package:marketplace/pages/purchaser/procurements/procurements_cubit.dart';
+import 'package:marketplace/pages/purchaser/procurements/procurements_states.dart';
+import 'package:marketplace/router/router.dart';
 import 'package:marketplace/shared/data/procurement.dart';
 import 'package:marketplace/shared/div.dart';
 import 'package:marketplace/shared/side_nav.dart';
@@ -44,7 +44,7 @@ class _ProcurementSection extends StatelessWidget {
               const Text('Запросы', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 50)),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/add_procurement');
+                  Navigator.of(context).pushNamed(purchaserPath + '/add_procurement');
                 },
                 child: Container(
                   height: 50,

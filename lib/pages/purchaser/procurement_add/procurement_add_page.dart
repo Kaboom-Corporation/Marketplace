@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:marketplace/router/router.dart';
 import 'package:marketplace/shared/data/procurement.dart';
 import 'package:marketplace/shared/div.dart';
 import 'package:marketplace/shared/dropdown_popup/dropdown_item.dart';
@@ -363,7 +364,7 @@ class _AddProcurementSectionState extends State<_AddProcurementSection> {
                     );
               });
 
-              Navigator.of(context).pushNamed('/procurements');
+              Navigator.of(context).pushNamed(purchaserPath + '/procurements');
             },
             child: Container(
               height: 55,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:marketplace/consts.dart';
 import 'package:marketplace/main.dart';
+import 'package:marketplace/router/router.dart';
 
 class SideNav extends StatefulWidget {
   const SideNav({Key? key}) : super(key: key);
@@ -62,8 +63,8 @@ class _SideNavState extends State<SideNav> {
           ),
           Column(
             children: const [
-              _SideNavItem(route: '/procurements', label: 'Запросы', icon: Icons.shopping_cart),
-              _SideNavItem(route: '/profile', label: 'Профиль', icon: Icons.person),
+              _SideNavItem(route: purchaserPath + '/procurements', label: 'Запросы', icon: Icons.shopping_cart),
+              _SideNavItem(route: purchaserPath + '/profile', label: 'Профиль', icon: Icons.person),
             ],
           ),
           Container(
@@ -82,7 +83,9 @@ class _SideNavState extends State<SideNav> {
                 Container(height: 10),
                 GestureDetector(
                   onTap: () {
-                    FirebaseAuth.instance.signOut().then((value) => Navigator.of(context).pushNamed('/auth'));
+                    FirebaseAuth.instance
+                        .signOut()
+                        .then((value) => Navigator.of(context).pushNamed(purchaserPath + '/auth'));
                   },
                   child: Container(
                     height: 38,
