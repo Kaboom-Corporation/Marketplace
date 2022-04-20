@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/main.dart';
 import 'package:marketplace/pages/purchaser/auth/auth_cubit.dart';
 import 'package:marketplace/pages/purchaser/auth/auth_page.dart';
+import 'package:marketplace/pages/purchaser/procurement/procurement_cubit.dart';
+import 'package:marketplace/pages/purchaser/procurement/procurement_info_page.dart';
 import 'package:marketplace/pages/purchaser/procurement_add/procurement_add_page.dart';
 import 'package:marketplace/pages/purchaser/procurements/procurements_cubit.dart';
 import 'package:marketplace/pages/purchaser/procurements/procurements_page.dart';
@@ -11,6 +13,8 @@ import 'package:marketplace/pages/purchaser/profile/profile_page.dart';
 import 'package:marketplace/pages/purchaser/register/register_cubit.dart';
 import 'package:marketplace/pages/purchaser/register/register_page.dart';
 import 'package:marketplace/router/router.dart';
+
+const String purchaserPath = '/purchaser';
 
 Route<dynamic>? purchaserRoutGenerator(RouteSettings settings) {
   String nonPurchaserPath = settings.name!.substring(purchaserPath.length);
@@ -23,12 +27,11 @@ Route<dynamic>? purchaserRoutGenerator(RouteSettings settings) {
             settings: const RouteSettings(name: purchaserPath + '/auth'));
       case '/auth':
         return MaterialPageRoute(
-            builder: (_) => BlocProvider(create: (c) => AuthCubit(), child: const AuthPage()),
-            settings: const RouteSettings(name: purchaserPath + '/auth'));
+            builder: (_) => BlocProvider(create: (c) => AuthCubit(), child: const AuthPage()), settings: settings);
       case '/register':
         return MaterialPageRoute(
             builder: (_) => BlocProvider(create: (c) => RegisterCubit(), child: const RegisterPage()),
-            settings: const RouteSettings(name: purchaserPath + '/register'));
+            settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(create: (c) => AuthCubit(), child: const AuthPage()),
@@ -39,14 +42,19 @@ Route<dynamic>? purchaserRoutGenerator(RouteSettings settings) {
       case '/procurements':
         return MaterialPageRoute(
             builder: (_) => BlocProvider(create: (c) => ProcurementsCubit(), child: const ProcurementsPage()),
-            settings: const RouteSettings(name: purchaserPath + '/procurements'));
+            settings: settings);
       case '/add_procurement':
-        return MaterialPageRoute(
-            builder: (_) => const ProcurementAddPage(),
-            settings: const RouteSettings(name: purchaserPath + '/add_procurement'));
+        return MaterialPageRoute(builder: (_) => const ProcurementAddPage(), settings: settings);
       case '/profile':
         return MaterialPageRoute(
-            builder: (_) => const ProfilePage(), settings: const RouteSettings(name: purchaserPath + '/profile'));
+          builder: (_) => const ProfilePage(),
+          settings: settings,
+        );
+      case '/procurement-info':
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                create: (c) => ProcurementCubit(settings.arguments.toString()), child: const ProcurementInfoPage()),
+            settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(create: (c) => ProcurementsCubit(), child: const ProcurementsPage()),

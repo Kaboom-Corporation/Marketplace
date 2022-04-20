@@ -8,9 +8,9 @@ class ProcurementsStateLoading extends ProcurementsState {}
 
 class ProcurementsStateLoaded extends ProcurementsState {
   List<Procurement> procurements;
-  List<String> ids;
+  List<DocumentReference<Map<String, dynamic>>> refs;
   ProcurementsStateLoaded({
     required this.procurements,
-    required this.ids,
+    required this.refs,
   });
 }

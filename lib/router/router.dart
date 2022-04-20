@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:marketplace/pages/landing_page.dart';
-import 'package:marketplace/router/purchaser_rouer.dart';
-
-const String purchaserPath = '/purchaser';
+import 'package:marketplace/router/purchaser_router.dart';
+import 'package:marketplace/router/supplier_router.dart';
 
 Route<dynamic>? routGenerator(RouteSettings settings) {
+  // print(settings.name);
+
   if (settings.name == null) {
     return MaterialPageRoute(builder: (_) => const LandingPage(), settings: const RouteSettings(name: '/'));
   }
+
   if (settings.name!.split('/')[1] == 'purchaser') {
     return purchaserRoutGenerator(settings);
+  }
+
+  if (settings.name!.split('/')[1] == 'supplier') {
+    return supplierRoutGenerator(settings);
   }
 
   return MaterialPageRoute(builder: (_) => const LandingPage(), settings: const RouteSettings(name: '/'));

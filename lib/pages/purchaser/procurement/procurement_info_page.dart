@@ -1,54 +1,117 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:marketplace/router/purchaser_router.dart';
-import 'package:marketplace/router/router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:marketplace/pages/purchaser/procurement/procurement_cubit.dart';
+import 'package:marketplace/pages/purchaser/procurement/procurement_nav.dart';
 import 'package:marketplace/shared/data/procurement.dart';
 import 'package:marketplace/shared/div.dart';
 import 'package:marketplace/shared/dropdown_popup/dropdown_item.dart';
 import 'package:marketplace/shared/dropdown_popup/dropdown_popup.dart';
-import 'package:marketplace/shared/side_nav_purchaser.dart';
+import 'package:marketplace/show_alert.dart';
 
-class ProcurementAddPage extends StatelessWidget {
-  const ProcurementAddPage({Key? key}) : super(key: key);
+class ProcurementInfoPage extends StatelessWidget {
+  const ProcurementInfoPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
         children: [
-          const SideNavPurchaser(),
+          const ProcurementNav(),
           Expanded(
               child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 100),
-            color: const Color.fromRGBO(243, 243, 243, 1),
-            child: const _AddProcurementSection(),
-          )),
+                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 100),
+                  color: const Color.fromRGBO(243, 243, 243, 1),
+                  child: BlocBuilder<ProcurementCubit, ProcurementState>(builder: (c, s) {
+                    if (s is ProcurementStateLoaded) {
+                      return ProcurementFrame(
+                          id: s.id,
+                          procurementType: s.procurement.procurementType == "auction"
+                              ? ProcurementType.Fixed
+                              : ProcurementType.Auction,
+                          name: s.procurement.name,
+                          quantity: s.procurement.quantity,
+                          price: s.procurement.price,
+                          currency: s.procurement.currency,
+                          paymentMethod: s.procurement.paymentMethod,
+                          productType: s.procurement.productType,
+                          endDate: s.procurement.endDate,
+                          deliveryAddress: s.procurement.deliveryAddress,
+                          comment: s.procurement.comment);
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }))),
         ],
       ),
     );
   }
 }
 
-class _AddProcurementSection extends StatefulWidget {
-  const _AddProcurementSection({Key? key}) : super(key: key);
+class ProcurementFrame extends StatefulWidget {
+  const ProcurementFrame({
+    Key? key,
+    required this.id,
+    required this.procurementType,
+    required this.name,
+    required this.quantity,
+    required this.price,
+    required this.currency,
+    required this.paymentMethod,
+    required this.productType,
+    required this.endDate,
+    required this.deliveryAddress,
+    required this.comment,
+  }) : super(key: key);
+
+  final String id;
+
+  final ProcurementType procurementType;
+  final String name;
+  final String quantity;
+  final String price;
+  final String currency;
+  final String paymentMethod;
+  final String productType;
+  final String endDate;
+  final String deliveryAddress;
+  final String comment;
 
   @override
-  State<_AddProcurementSection> createState() => _AddProcurementSectionState();
+  State<ProcurementFrame> createState() => _ProcurementFrameState();
 }
 
-class _AddProcurementSectionState extends State<_AddProcurementSection> {
-  final buttonKey = GlobalKey();
-  ProcurementType procurementType = ProcurementType.Fixed;
-  TextEditingController _name = TextEditingController();
-  TextEditingController _quantity = TextEditingController();
-  TextEditingController _price = TextEditingController();
-  TextEditingController _currency = TextEditingController(text: "₽");
-  TextEditingController _paymentMethod = TextEditingController();
-  TextEditingController _productType = TextEditingController();
-  TextEditingController _endDate = TextEditingController();
-  TextEditingController _deliveryAddress = TextEditingController();
-  TextEditingController _comment = TextEditingController();
+class _ProcurementFrameState extends State<ProcurementFrame> {
+  late ProcurementType procurementType;
+  late TextEditingController _name;
+  late TextEditingController _quantity;
+  late TextEditingController _price;
+  late TextEditingController _currency;
+  late TextEditingController _paymentMethod;
+  late TextEditingController _productType;
+  late TextEditingController _endDate;
+  late TextEditingController _deliveryAddress;
+  late TextEditingController _comment;
+
+  @override
+  void initState() {
+    procurementType = widget.procurementType;
+    _name = TextEditingController(text: widget.name);
+    _quantity = TextEditingController(text: widget.quantity);
+    _price = TextEditingController(text: widget.price);
+    _currency = TextEditingController(text: widget.currency);
+    _paymentMethod = TextEditingController(text: widget.paymentMethod);
+    _productType = TextEditingController(text: widget.productType);
+    _endDate = TextEditingController(text: widget.endDate);
+    _deliveryAddress = TextEditingController(text: widget.deliveryAddress);
+    _comment = TextEditingController(text: widget.comment);
+
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -340,15 +403,16 @@ class _AddProcurementSectionState extends State<_AddProcurementSection> {
           GestureDetector(
             onTap: () {
               FirebaseFirestore.instance
-                  .collection('purchasers')
+                  .collection('users')
                   .doc(FirebaseAuth.instance.currentUser!.uid)
                   .get()
                   .then((value) {
                 FirebaseFirestore.instance
-                    .collection('purchasers')
+                    .collection('users')
                     .doc(FirebaseAuth.instance.currentUser!.uid)
                     .collection('procurements')
-                    .add(
+                    .doc(widget.id)
+                    .set(
                       Procurement(
                               procurementType: procurementType == ProcurementType.Auction ? "auction" : "fixed",
                               name: _name.text,
@@ -365,7 +429,7 @@ class _AddProcurementSectionState extends State<_AddProcurementSection> {
                     );
               });
 
-              Navigator.of(context).pushNamed(purchaserPath + '/procurements');
+              showAlert('Данные изменены');
             },
             child: Container(
               height: 55,
@@ -375,7 +439,7 @@ class _AddProcurementSectionState extends State<_AddProcurementSection> {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: const Center(
-                  child: Text('Создать запрос',
+                  child: Text('Сохранить изменения',
                       style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20, color: Colors.white))),
             ),
           ),

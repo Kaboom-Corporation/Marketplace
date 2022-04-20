@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:marketplace/pages/purchaser/procurements/procurements_cubit.dart';
-import 'package:marketplace/pages/purchaser/procurements/procurements_states.dart';
-import 'package:marketplace/router/purchaser_router.dart';
+import 'package:marketplace/pages/supplier/procurements/procurements_cubit.dart';
+import 'package:marketplace/pages/supplier/procurements/procurements_states.dart';
+import 'package:marketplace/router/supplier_router.dart';
 import 'package:marketplace/router/router.dart';
 import 'package:marketplace/shared/data/procurement.dart';
 import 'package:marketplace/shared/div.dart';
-import 'package:marketplace/shared/side_nav_purchaser.dart';
+import 'package:marketplace/shared/side_nav_supplier.dart';
 
 class ProcurementsPage extends StatelessWidget {
   const ProcurementsPage({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class ProcurementsPage extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          const SideNavPurchaser(),
+          const SideNavSupplier(),
           Expanded(
               child: Container(
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 100),
@@ -40,26 +41,9 @@ class _ProcurementSection extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Запросы', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 50)),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamed(purchaserPath + '/add_procurement');
-                },
-                child: Container(
-                  height: 50,
-                  width: 250,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: const Color.fromRGBO(96, 89, 238, 1),
-                  ),
-                  child: const Center(
-                    child: Text('+ создать новый',
-                        style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25, color: Colors.white)),
-                  ),
-                ),
-              ),
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Text('Запросы', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 50)),
             ],
           ),
           Container(height: 30),
@@ -87,7 +71,7 @@ class _ProcurementsList extends StatelessWidget {
           itemCount: s.procurements.length,
           itemBuilder: (_c, id) {
             return _ProcurementListItem(
-              id: s.ids[id],
+              ref: s.refs[id],
               procurement: s.procurements[id],
             );
           },
@@ -108,15 +92,15 @@ class _ProcurementsList extends StatelessWidget {
 }
 
 class _ProcurementListItem extends StatelessWidget {
-  const _ProcurementListItem({Key? key, required this.procurement, required this.id}) : super(key: key);
+  const _ProcurementListItem({Key? key, required this.procurement, required this.ref}) : super(key: key);
   final Procurement procurement;
-  final String id;
+  final DocumentReference<Map<String, dynamic>> ref;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(purchaserPath + '/procurement-info', arguments: id);
+        Navigator.of(context).pushNamed(supplierPath + '/procurement-info', arguments: ref);
       },
       child: SizedBox(
         height: 145,

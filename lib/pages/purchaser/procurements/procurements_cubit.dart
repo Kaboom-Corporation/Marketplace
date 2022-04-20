@@ -10,13 +10,17 @@ class ProcurementsCubit extends Cubit<ProcurementsState> {
   }
 
   void getAll() async {
+    List<String> ids = [];
     List<Procurement> procurements = await FirebaseFirestore.instance
-        .collection('users')
+        .collection('purchasers')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .collection('procurements')
         .get()
-        .then((value) => value.docs.map((e) => Procurement.fromMap(e.data())).toList());
+        .then((value) => value.docs.map((e) {
+              ids.add(e.id);
+              return Procurement.fromMap(e.data());
+            }).toList());
 
-    emit(ProcurementsStateLoaded(procurements: procurements));
+    emit(ProcurementsStateLoaded(procurements: procurements, ids: ids));
   }
 }

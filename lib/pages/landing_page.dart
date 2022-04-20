@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:marketplace/router/purchaser_router.dart';
 import 'package:marketplace/router/router.dart';
+import 'package:marketplace/router/supplier_router.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -11,12 +13,11 @@ class LandingPage extends StatelessWidget {
         children: [
           ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/supplier');
+                Navigator.of(context).pushNamed(supplierPath);
               },
               child: const Text('Supplier')),
           ElevatedButton(
               onPressed: () {
-                print('object');
                 Navigator.of(context).pushNamed(purchaserPath);
               },
               child: const Text('Purchaser')),

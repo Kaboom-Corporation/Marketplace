@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/main.dart';
-import 'package:marketplace/pages/purchaser/register/register_state.dart';
-import 'package:marketplace/router/purchaser_router.dart';
+import 'package:marketplace/pages/supplier/register/register_state.dart';
 import 'package:marketplace/router/router.dart';
+import 'package:marketplace/router/supplier_router.dart';
 import 'package:marketplace/show_alert.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
@@ -24,18 +24,17 @@ class RegisterCubit extends Cubit<RegisterState> {
     required String organisationName,
     required String itin,
   }) {
-    firestore.collection('purchasers').doc(auth.currentUser!.uid).set({
+    firestore.collection('suppliers').doc(auth.currentUser!.uid).set({
       "surname": surname,
       "name": name,
       "lastName": lastName,
       "organisationName": organisationName,
       "itin": itin,
     });
-    print("tf");
 
     isPurchaser = true;
 
-    navigatorKey.currentState!.pushNamed(purchaserPath + '/procurements');
+    navigatorKey.currentState!.pushNamed(supplierPath + '/procurements');
   }
 
   register({
@@ -130,11 +129,11 @@ class RegisterCubit extends Cubit<RegisterState> {
       await auth.signInWithEmailAndPassword(email: email, password: password);
 
       if (auth.currentUser != null) {
-        if (isPurchaser == false) {
-          FirebaseFirestore.instance.collection('purchasers').doc(auth.currentUser!.uid).get().then((value) {
+        if (isSupplier == false) {
+          FirebaseFirestore.instance.collection('suppliers').doc(auth.currentUser!.uid).get().then((value) {
             if (value.exists) {
               isSupplier = true;
-              navigatorKey.currentState!.pushNamed(purchaserPath);
+              navigatorKey.currentState!.pushNamed(supplierPath);
             } else if (!value.exists) {
               createUserAndNavigate(
                   email: email,
@@ -147,7 +146,7 @@ class RegisterCubit extends Cubit<RegisterState> {
             }
           });
         } else {
-          navigatorKey.currentState!.pushNamed(purchaserPath + '/procurements');
+          navigatorKey.currentState!.pushNamed(supplierPath + '/procurements');
         }
       }
     } on FirebaseAuthException catch (e) {

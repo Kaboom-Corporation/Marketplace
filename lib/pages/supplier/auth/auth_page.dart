@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/consts.dart';
-import 'package:marketplace/pages/purchaser/auth/auth_cubit.dart';
-import 'package:marketplace/router/purchaser_router.dart';
+import 'package:marketplace/pages/supplier/auth/auth_cubit.dart';
 import 'package:marketplace/router/router.dart';
+import 'package:marketplace/router/supplier_router.dart';
 import 'package:video_player/video_player.dart';
 
 class AuthPage extends StatefulWidget {
@@ -208,7 +208,7 @@ class _AuthPageState extends State<AuthPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, purchaserPath + '/register');
+                            Navigator.pushNamed(context, supplierPath + '/register');
                           },
                           child: const Text(
                             'Регистрация',

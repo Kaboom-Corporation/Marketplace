@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marketplace/shared/side_nav.dart';
+import 'package:marketplace/shared/side_nav_purchaser.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          const SideNav(),
+          const SideNavPurchaser(),
           Expanded(
               child: Container(
             color: Colors.grey,

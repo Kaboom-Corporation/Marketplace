@@ -1,19 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/consts.dart';
-import 'package:marketplace/main.dart';
+import 'package:marketplace/pages/supplier/procurement/procurement_cubit.dart';
+import 'package:marketplace/router/supplier_router.dart';
 import 'package:marketplace/router/router.dart';
 
-class SideNav extends StatefulWidget {
-  const SideNav({Key? key}) : super(key: key);
+class ProcurementNav extends StatefulWidget {
+  const ProcurementNav({Key? key}) : super(key: key);
 
   @override
-  State<SideNav> createState() => _SideNavState();
+  State<ProcurementNav> createState() => _ProcurementNavState();
 }
 
-class _SideNavState extends State<SideNav> {
+class _ProcurementNavState extends State<ProcurementNav> {
   String organisationName = "...";
   String itin = "...";
 
@@ -54,7 +55,7 @@ class _SideNavState extends State<SideNav> {
               Column(
                 children: const [
                   Text('Торги', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 30)),
-                  Text('Заказчик',
+                  Text('Исполнитель',
                       style:
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 17, color: Color.fromRGBO(215, 59, 29, 1))),
                 ],
@@ -62,9 +63,24 @@ class _SideNavState extends State<SideNav> {
             ],
           ),
           Column(
-            children: const [
-              _SideNavItem(route: purchaserPath + '/procurements', label: 'Запросы', icon: Icons.shopping_cart),
-              _SideNavItem(route: purchaserPath + '/profile', label: 'Профиль', icon: Icons.person),
+            children: [
+              const _SideNavItem(
+                route: supplierPath + '/procurements',
+                label: 'Назад',
+                icon: Icons.arrow_back,
+              ),
+              _SideNavItem(
+                route: supplierPath + '/procurement-info',
+                label: 'Информация',
+                icon: Icons.info,
+                argumentOption: BlocProvider.of<ProcurementCubit>(context).ref,
+              ),
+              _SideNavItem(
+                route: supplierPath + '/procurement-offers',
+                label: 'Предложения',
+                icon: Icons.local_offer,
+                argumentOption: BlocProvider.of<ProcurementCubit>(context).ref,
+              ),
             ],
           ),
           Container(
@@ -74,18 +90,12 @@ class _SideNavState extends State<SideNav> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(organisationName,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 20, color: Color.fromRGBO(28, 55, 88, 1))),
-                Text("ИНН: " + itin,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 20, color: Color.fromRGBO(164, 164, 164, 1))),
-                Container(height: 10),
                 GestureDetector(
                   onTap: () {
-                    FirebaseAuth.instance
-                        .signOut()
-                        .then((value) => Navigator.of(context).pushNamed(purchaserPath + '/auth'));
+                    FirebaseAuth.instance.signOut().then((value) => Navigator.of(context).pushNamedAndRemoveUntil(
+                          supplierPath + '/auth',
+                          (route) => false,
+                        ));
                   },
                   child: Container(
                     height: 38,
@@ -108,22 +118,19 @@ class _SideNavState extends State<SideNav> {
 }
 
 class _SideNavItem extends StatelessWidget {
-  const _SideNavItem({
-    Key? key,
-    required this.route,
-    required this.label,
-    required this.icon,
-  }) : super(key: key);
+  const _SideNavItem({Key? key, required this.route, required this.label, required this.icon, this.argumentOption})
+      : super(key: key);
   final String route;
   final String label;
   final IconData icon;
+  final Object? argumentOption;
 
   @override
   Widget build(BuildContext context) {
     final isSelected = route == ModalRoute.of(context)!.settings.name;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(route);
+        Navigator.of(context).pushNamed(route, arguments: argumentOption);
       },
       child: Container(
         height: 70,
