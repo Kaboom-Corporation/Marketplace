@@ -291,7 +291,8 @@ class _AddOfferWidgetState extends State<AddOfferWidget> {
                                   possibleDate: widget._possibleDate.text,
                                   comment: widget._comment.text,
                                   productName: widget.procurementName,
-                                  productId: widget.procuremId)
+                                  productId: widget.procuremId,
+                                  offererId: FirebaseAuth.instance.currentUser!.uid)
                               .toMap());
                         }).then((value) => {Navigator.of(context).pop()});
                       },

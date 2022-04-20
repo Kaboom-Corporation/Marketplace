@@ -6,10 +6,11 @@ class Div extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+        flex: 10,
         child: Container(
-      height: 2,
-      width: 2,
-      color: const Color.fromRGBO(225, 225, 225, 1),
-    ));
+          height: 2,
+          width: 2,
+          color: const Color.fromRGBO(225, 225, 225, 1),
+        ));
   }
 }

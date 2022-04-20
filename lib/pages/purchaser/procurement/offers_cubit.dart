@@ -5,27 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/shared/data/offer.dart';
 
 class OffersCubit extends Cubit<OffersState> {
-  OffersCubit(this.procurementId) : super(OffersStateLoading()) {
+  OffersCubit(this.ref) : super(OffersStateLoading()) {
     getAll();
   }
 
-  String procurementId;
+  DocumentReference<Map<String, dynamic>> ref;
 
   void getAll() async {
-    List<String> ids = [];
-    List<Offer> procurements = await FirebaseFirestore.instance
-        .collection('purchasers')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('procurements')
-        .doc(procurementId)
-        .collection('offers')
-        .get()
-        .then((value) => value.docs.map((e) {
-              ids.add(e.id);
-              return Offer.fromMap(e.data());
-            }).toList());
+    List<DocumentReference<Map<String, dynamic>>> refs = [];
+    List<Offer> procurements = await ref.collection('offers').get().then((value) => value.docs.map((e) {
+          refs.add(e.reference);
+          return Offer.fromMap(e.data());
+        }).toList());
 
-    emit(OffersStateLoaded(offers: procurements, ids: ids));
+    emit(OffersStateLoaded(offers: procurements, refs: refs));
   }
 }
 
@@ -35,9 +28,9 @@ class OffersStateLoading extends OffersState {}
 
 class OffersStateLoaded extends OffersState {
   List<Offer> offers;
-  List<String> ids;
+  List<DocumentReference<Map<String, dynamic>>> refs;
   OffersStateLoaded({
     required this.offers,
-    required this.ids,
+    required this.refs,
   });
 }

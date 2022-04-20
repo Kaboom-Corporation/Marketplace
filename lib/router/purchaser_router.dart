@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/main.dart';
 import 'package:marketplace/pages/purchaser/auth/auth_cubit.dart';
 import 'package:marketplace/pages/purchaser/auth/auth_page.dart';
+import 'package:marketplace/pages/purchaser/offer/chat_cubit.dart';
+import 'package:marketplace/pages/purchaser/offer/chat_page.dart';
+import 'package:marketplace/pages/purchaser/procurement/offers_cubit.dart';
 import 'package:marketplace/pages/purchaser/procurement/procurement_cubit.dart';
 import 'package:marketplace/pages/purchaser/procurement/procurement_info_page.dart';
+import 'package:marketplace/pages/purchaser/procurement/procurement_offers_page.dart';
 import 'package:marketplace/pages/purchaser/procurement_add/procurement_add_page.dart';
 import 'package:marketplace/pages/purchaser/procurements/procurements_cubit.dart';
 import 'package:marketplace/pages/purchaser/procurements/procurements_page.dart';
@@ -53,7 +58,33 @@ Route<dynamic>? purchaserRoutGenerator(RouteSettings settings) {
       case '/procurement-info':
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-                create: (c) => ProcurementCubit(settings.arguments.toString()), child: const ProcurementInfoPage()),
+                create: (c) => ProcurementCubit(settings.arguments as DocumentReference<Map<String, dynamic>>),
+                child: const ProcurementInfoPage()),
+            settings: settings);
+      case '/procurement-offers':
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                        create: (c) => OffersCubit(settings.arguments as DocumentReference<Map<String, dynamic>>)),
+                    BlocProvider(
+                        create: (c) => ProcurementCubit(settings.arguments as DocumentReference<Map<String, dynamic>>)),
+                  ],
+                  child: const ProcurementOffersPage(),
+                ),
+            settings: settings);
+      case '/offer-chat':
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                        create: (c) => ChatCubit(settings.arguments as DocumentReference<Map<String, dynamic>>)),
+                    BlocProvider(
+                        create: (c) => ProcurementCubit(
+                            (settings.arguments as DocumentReference<Map<String, dynamic>>).parent.parent!)),
+                  ],
+                  child: const ChatPage(),
+                ),
             settings: settings);
       default:
         return MaterialPageRoute(

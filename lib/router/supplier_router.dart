@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/main.dart';
+import 'package:marketplace/pages/supplier/offer/chat_cubit.dart';
+import 'package:marketplace/pages/supplier/offer/chat_page.dart';
 import 'package:marketplace/pages/supplier/procurement/offers_cubit.dart';
 import 'package:marketplace/pages/supplier/procurement/procurement_cubit.dart';
 import 'package:marketplace/pages/supplier/auth/auth_cubit.dart';
@@ -59,6 +61,19 @@ Route<dynamic>? supplierRoutGenerator(RouteSettings settings) {
                   BlocProvider(
                       create: (c) => ProcurementCubit(settings.arguments as DocumentReference<Map<String, dynamic>>)),
                 ], child: const ProcurementOffersPage()),
+            settings: settings);
+      case '/offer-chat':
+        return MaterialPageRoute(
+            builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                        create: (c) => ChatCubit(settings.arguments as DocumentReference<Map<String, dynamic>>)),
+                    BlocProvider(
+                        create: (c) => ProcurementCubit(
+                            (settings.arguments as DocumentReference<Map<String, dynamic>>).parent.parent!)),
+                  ],
+                  child: const ChatPage(),
+                ),
             settings: settings);
       default:
         return MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/pages/purchaser/procurements/procurements_cubit.dart';
@@ -84,19 +85,22 @@ class _ProcurementsList extends StatelessWidget {
     return BlocBuilder<ProcurementsCubit, ProcurementsState>(builder: (c, s) {
       if (s is ProcurementsStateLoaded) {
         return ListView.separated(
-          itemCount: s.procurements.length,
+          itemCount: s.procurements.length + 1,
           itemBuilder: (_c, id) {
+            if (id == s.procurements.length) {
+              return Container();
+            }
             return _ProcurementListItem(
-              id: s.ids[id],
+              ref: s.refs[id],
               procurement: s.procurements[id],
             );
           },
           separatorBuilder: (_c, id) {
             return Row(
               children: [
-                Expanded(child: Container()),
+                Expanded(flex: 3, child: Container()),
                 const Div(),
-                Expanded(child: Container()),
+                Expanded(flex: 3, child: Container()),
               ],
             );
           },
@@ -108,15 +112,15 @@ class _ProcurementsList extends StatelessWidget {
 }
 
 class _ProcurementListItem extends StatelessWidget {
-  const _ProcurementListItem({Key? key, required this.procurement, required this.id}) : super(key: key);
+  const _ProcurementListItem({Key? key, required this.procurement, required this.ref}) : super(key: key);
   final Procurement procurement;
-  final String id;
+  final DocumentReference<Map<String, dynamic>> ref;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(purchaserPath + '/procurement-info', arguments: id);
+        Navigator.of(context).pushNamed(purchaserPath + '/procurement-info', arguments: ref);
       },
       child: SizedBox(
         height: 145,
@@ -124,6 +128,7 @@ class _ProcurementListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
+              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -141,16 +146,15 @@ class _ProcurementListItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(19),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.20),
-                    blurRadius: 10,
-                  ),
-                ],
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.20),
+                //     blurRadius: 10,
+                //   ),
+                // ],
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 25),
               height: 85,
-              width: 250,
+              width: 130,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,

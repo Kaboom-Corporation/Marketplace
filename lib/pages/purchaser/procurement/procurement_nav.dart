@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/consts.dart';
+import 'package:marketplace/pages/purchaser/procurement/procurement_cubit.dart';
 import 'package:marketplace/router/purchaser_router.dart';
 import 'package:marketplace/router/router.dart';
 
@@ -61,10 +63,20 @@ class _ProcurementNavState extends State<ProcurementNav> {
             ],
           ),
           Column(
-            children: const [
-              _SideNavItem(route: purchaserPath + '/procurements', label: 'Назад', icon: Icons.arrow_back),
-              _SideNavItem(route: purchaserPath + '/procurement-info', label: 'Информация', icon: Icons.info),
-              _SideNavItem(route: purchaserPath + '/procurement-offers', label: 'Предложения', icon: Icons.local_offer),
+            children: [
+              const _SideNavItem(route: purchaserPath + '/procurements', label: 'Назад', icon: Icons.arrow_back),
+              _SideNavItem(
+                route: purchaserPath + '/procurement-info',
+                label: 'Информация',
+                icon: Icons.info,
+                argumentOption: BlocProvider.of<ProcurementCubit>(context).ref,
+              ),
+              _SideNavItem(
+                route: purchaserPath + '/procurement-offers',
+                label: 'Предложения',
+                icon: Icons.local_offer,
+                argumentOption: BlocProvider.of<ProcurementCubit>(context).ref,
+              ),
             ],
           ),
           Container(
@@ -102,22 +114,19 @@ class _ProcurementNavState extends State<ProcurementNav> {
 }
 
 class _SideNavItem extends StatelessWidget {
-  const _SideNavItem({
-    Key? key,
-    required this.route,
-    required this.label,
-    required this.icon,
-  }) : super(key: key);
+  const _SideNavItem({Key? key, required this.route, required this.label, required this.icon, this.argumentOption})
+      : super(key: key);
   final String route;
   final String label;
   final IconData icon;
+  final Object? argumentOption;
 
   @override
   Widget build(BuildContext context) {
     final isSelected = route == ModalRoute.of(context)!.settings.name;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(route);
+        Navigator.of(context).pushNamed(route, arguments: argumentOption);
       },
       child: Container(
         height: 70,

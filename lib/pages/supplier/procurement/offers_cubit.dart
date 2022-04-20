@@ -15,15 +15,13 @@ class OffersCubit extends Cubit<OffersState> {
   String procurementName = "";
 
   void getAll() async {
-    List<String> ids = [];
+    List<DocumentReference<Map<String, dynamic>>> refs = [];
     List<Offer> procurements = await ref.collection('offers').get().then((value) => value.docs.map((e) {
-          ids.add(e.id);
+          refs.add(e.reference);
           return Offer.fromMap(e.data());
         }).toList());
 
-    emit(OffersStateLoading());
-    print('cleaned');
-    emit(OffersStateLoaded(offers: procurements, ids: ids));
+    emit(OffersStateLoaded(offers: procurements, refs: refs));
   }
 
   void getProcurementName() async {
@@ -37,9 +35,9 @@ class OffersStateLoading extends OffersState {}
 
 class OffersStateLoaded extends OffersState {
   List<Offer> offers;
-  List<String> ids;
+  List<DocumentReference<Map<String, dynamic>>> refs;
   OffersStateLoaded({
     required this.offers,
-    required this.ids,
+    required this.refs,
   });
 }
