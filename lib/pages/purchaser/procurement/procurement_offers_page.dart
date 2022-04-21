@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:marketplace/pages/purchaser/offer/offer_modal.dart';
 import 'package:marketplace/pages/purchaser/procurement/offers_cubit.dart';
 import 'package:marketplace/pages/purchaser/procurement/procurement_nav.dart';
 import 'package:marketplace/router/purchaser_router.dart';
@@ -64,19 +66,22 @@ class _ProcurementsList extends StatelessWidget {
     return BlocBuilder<OffersCubit, OffersState>(builder: (c, s) {
       if (s is OffersStateLoaded) {
         return ListView.separated(
-          itemCount: s.offers.length,
+          itemCount: s.offers.length + 1,
           itemBuilder: (_c, id) {
+            if (id == s.offers.length) {
+              return Container();
+            }
             return _OffersListItem(
-              id: s.ids[id],
+              ref: s.refs[id],
               offer: s.offers[id],
             );
           },
           separatorBuilder: (_c, id) {
             return Row(
               children: [
-                Expanded(child: Container()),
+                Expanded(flex: 3, child: Container()),
                 const Div(),
-                Expanded(child: Container()),
+                Expanded(flex: 3, child: Container()),
               ],
             );
           },
@@ -88,23 +93,26 @@ class _ProcurementsList extends StatelessWidget {
 }
 
 class _OffersListItem extends StatelessWidget {
-  const _OffersListItem({Key? key, required this.offer, required this.id}) : super(key: key);
+  const _OffersListItem({Key? key, required this.offer, required this.ref}) : super(key: key);
   final Offer offer;
-  final String id;
+  final DocumentReference<Map<String, dynamic>> ref;
 
   @override
   Widget build(BuildContext context) {
+    print(offer.selected);
+
     return GestureDetector(
-      onTap: () {
-        // Navigator.of(context).pushNamed(purchaserPath + '/procurement-info', arguments: id);
+      onTap: () async {
+        await showOfferModal(offer, ref);
+        BlocProvider.of<OffersCubit>(context).getAll();
       },
       child: SizedBox(
         height: 145,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(offer.offererName,
@@ -114,20 +122,20 @@ class _OffersListItem extends StatelessWidget {
                         fontWeight: FontWeight.w600, fontSize: 25, color: Color.fromRGBO(153, 153, 153, 1))),
               ],
             ),
+            Expanded(child: Container()),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(19),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.20),
-                    blurRadius: 10,
-                  ),
-                ],
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.20),
+                //     blurRadius: 10,
+                //   ),
+                // ],
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 25),
               height: 85,
-              width: 250,
+              width: 130,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,6 +147,23 @@ class _OffersListItem extends StatelessWidget {
                 ],
               ),
             ),
+            offer.selected == true ? Container(width: 20) : Container(),
+            offer.selected == true
+                ? Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.green[200],
+                    ),
+                    child: Center(
+                        child: Icon(
+                      Icons.emoji_events,
+                      size: 40,
+                      color: Colors.yellow[200],
+                    )),
+                  )
+                : Container(),
           ],
         ),
       ),

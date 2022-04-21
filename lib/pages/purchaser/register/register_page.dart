@@ -19,136 +19,163 @@ class RegisterPage extends StatelessWidget {
     TextEditingController _password2Controller = TextEditingController();
 
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          Center(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              height: 83,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(21),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.33),
-                    blurRadius: 16,
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: 62,
-                    height: 62,
-                    child: Image.asset(logoPath, isAntiAlias: true, fit: BoxFit.contain),
-                  ),
-                  Container(width: 3),
-                  const Text('Торги', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 47))
-                ],
-              ),
-            ),
-          ),
-          Container(height: 20),
-          const Text('Регистрация',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 35, color: Color.fromRGBO(49, 49, 49, 1))),
-          Container(height: 20),
-          Container(
-            width: 1000,
-            height: 550,
-            padding: const EdgeInsets.all(35),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(27),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.25),
-                  blurRadius: 20,
-                ),
-              ],
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    RegistrationField(label: 'Фамилия', controller: _surnameController),
-                    RegistrationField(label: 'Имя', controller: _nameController),
-                    RegistrationField(label: 'Отчество', controller: _lastNameController),
-                    RegistrationField(label: 'Название организации', controller: _organisationNameController),
-                    RegistrationField(label: 'ИНН', controller: _itinController),
+                    Image.network(waveLT, isAntiAlias: true, fit: BoxFit.contain),
                   ],
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    RegistrationField(label: 'Почта', controller: _emailController),
-                    RegistrationField(label: 'Пароль', controller: _password1Controller, obscure: true),
-                    RegistrationField(label: 'Повторите пароль', controller: _password2Controller, obscure: true),
-                    const EmptyField(),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                            )),
-                        Container(height: 10),
-                        GestureDetector(
-                          onTap: () {
-                            if (_password1Controller.text != _password2Controller.text) {
-                              showAlert('Пароли не соврадают');
-                            } else if (_surnameController.text.isEmpty) {
-                              showAlert('Фамилия не заполнена');
-                            } else if (_nameController.text.isEmpty) {
-                              showAlert('Имя не заполнено');
-                            } else if (_lastNameController.text.isEmpty) {
-                              showAlert('Отчество не заполно');
-                            } else if (_organisationNameController.text.isEmpty) {
-                              showAlert('Название организации не заполнено');
-                            } else if (_itinController.text.isEmpty) {
-                              showAlert('ИНН не заполнен');
-                            } else {
-                              BlocProvider.of<RegisterCubit>(context).register(
-                                  email: _emailController.text,
-                                  password: _password1Controller.text,
-                                  surname: _surnameController.text,
-                                  name: _nameController.text,
-                                  lastName: _lastNameController.text,
-                                  organisationName: _organisationNameController.text,
-                                  itin: _itinController.text);
-                            }
-                          },
-                          child: Container(
-                            height: 45,
-                            width: 400,
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(96, 89, 238, 1), borderRadius: BorderRadius.circular(12)),
-                            child: const Center(
-                              child: Text('Подтвердить заявку',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20,
-                                  )),
-                            ),
-                          ),
-                        ),
-                      ],
+                    Image.network(waveRB, isAntiAlias: true, fit: BoxFit.contain),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  height: 83,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(21),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.33),
+                        blurRadius: 16,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 62,
+                        height: 62,
+                        child: Image.network(logoPath, isAntiAlias: true, fit: BoxFit.contain),
+                      ),
+                      Container(width: 3),
+                      const Text('Торги', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 47))
+                    ],
+                  ),
+                ),
+              ),
+              Container(height: 20),
+              const Text('Регистрация в качестве заказчика',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 35, color: Color.fromRGBO(49, 49, 49, 1))),
+              Container(height: 20),
+              Container(
+                width: 1000,
+                height: 550,
+                padding: const EdgeInsets.all(35),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(27),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.25),
+                      blurRadius: 20,
                     ),
                   ],
-                )
-              ],
-            ),
-          )
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RegistrationField(label: 'Фамилия', controller: _surnameController),
+                        RegistrationField(label: 'Имя', controller: _nameController),
+                        RegistrationField(label: 'Отчество', controller: _lastNameController),
+                        RegistrationField(label: 'Название организации', controller: _organisationNameController),
+                        RegistrationField(label: 'ИНН', controller: _itinController),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RegistrationField(label: 'Почта', controller: _emailController),
+                        RegistrationField(label: 'Пароль', controller: _password1Controller, obscure: true),
+                        RegistrationField(label: 'Повторите пароль', controller: _password2Controller, obscure: true),
+                        const EmptyField(),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                )),
+                            Container(height: 10),
+                            GestureDetector(
+                              onTap: () {
+                                if (_password1Controller.text != _password2Controller.text) {
+                                  showAlert('Пароли не соврадают');
+                                } else if (_surnameController.text.isEmpty) {
+                                  showAlert('Фамилия не заполнена');
+                                } else if (_nameController.text.isEmpty) {
+                                  showAlert('Имя не заполнено');
+                                } else if (_lastNameController.text.isEmpty) {
+                                  showAlert('Отчество не заполно');
+                                } else if (_organisationNameController.text.isEmpty) {
+                                  showAlert('Название организации не заполнено');
+                                } else if (_itinController.text.isEmpty) {
+                                  showAlert('ИНН не заполнен');
+                                } else {
+                                  BlocProvider.of<RegisterCubit>(context).register(
+                                      email: _emailController.text,
+                                      password: _password1Controller.text,
+                                      surname: _surnameController.text,
+                                      name: _nameController.text,
+                                      lastName: _lastNameController.text,
+                                      organisationName: _organisationNameController.text,
+                                      itin: _itinController.text);
+                                }
+                              },
+                              child: Container(
+                                height: 45,
+                                width: 400,
+                                decoration: BoxDecoration(
+                                    color: const Color.fromRGBO(96, 89, 238, 1),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: const Center(
+                                  child: Text('Подтвердить заявку',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20,
+                                      )),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );

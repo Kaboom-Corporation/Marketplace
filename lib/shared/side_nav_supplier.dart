@@ -49,7 +49,7 @@ class _SideNavSupplierState extends State<SideNavSupplier> {
               SizedBox(
                 width: 60,
                 height: 60,
-                child: Image.asset(logoPath, isAntiAlias: true, fit: BoxFit.contain),
+                child: Image.network(logoPath, isAntiAlias: true, fit: BoxFit.contain),
               ),
               Container(width: 3),
               Column(
@@ -65,7 +65,6 @@ class _SideNavSupplierState extends State<SideNavSupplier> {
           Column(
             children: const [
               _SideNavItem(route: supplierPath + '/procurements', label: 'Запросы', icon: Icons.shopping_cart),
-              _SideNavItem(route: supplierPath + '/my-offers', label: 'Мои предложения', icon: Icons.local_offer),
               _SideNavItem(route: supplierPath + '/profile', label: 'Профиль', icon: Icons.person),
             ],
           ),

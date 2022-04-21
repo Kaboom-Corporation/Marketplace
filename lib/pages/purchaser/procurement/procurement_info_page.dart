@@ -27,7 +27,7 @@ class ProcurementInfoPage extends StatelessWidget {
                   child: BlocBuilder<ProcurementCubit, ProcurementState>(builder: (c, s) {
                     if (s is ProcurementStateLoaded) {
                       return ProcurementFrame(
-                          id: s.id,
+                          ref: s.ref,
                           procurementType: s.procurement.procurementType == "auction"
                               ? ProcurementType.Fixed
                               : ProcurementType.Auction,
@@ -54,7 +54,7 @@ class ProcurementInfoPage extends StatelessWidget {
 class ProcurementFrame extends StatefulWidget {
   const ProcurementFrame({
     Key? key,
-    required this.id,
+    required this.ref,
     required this.procurementType,
     required this.name,
     required this.quantity,
@@ -67,8 +67,7 @@ class ProcurementFrame extends StatefulWidget {
     required this.comment,
   }) : super(key: key);
 
-  final String id;
-
+  final DocumentReference<Map<String, dynamic>> ref;
   final ProcurementType procurementType;
   final String name;
   final String quantity;
@@ -95,9 +94,11 @@ class _ProcurementFrameState extends State<ProcurementFrame> {
   late TextEditingController _endDate;
   late TextEditingController _deliveryAddress;
   late TextEditingController _comment;
+  late DocumentReference<Map<String, dynamic>> ref;
 
   @override
   void initState() {
+    ref = widget.ref;
     procurementType = widget.procurementType;
     _name = TextEditingController(text: widget.name);
     _quantity = TextEditingController(text: widget.quantity);
@@ -403,30 +404,25 @@ class _ProcurementFrameState extends State<ProcurementFrame> {
           GestureDetector(
             onTap: () {
               FirebaseFirestore.instance
-                  .collection('users')
+                  .collection('purchasers')
                   .doc(FirebaseAuth.instance.currentUser!.uid)
                   .get()
                   .then((value) {
-                FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .collection('procurements')
-                    .doc(widget.id)
-                    .set(
-                      Procurement(
-                              procurementType: procurementType == ProcurementType.Auction ? "auction" : "fixed",
-                              name: _name.text,
-                              quantity: _quantity.text,
-                              price: _price.text,
-                              currency: _currency.text,
-                              paymentMethod: _paymentMethod.text,
-                              productType: _productType.text,
-                              endDate: _endDate.text,
-                              deliveryAddress: _deliveryAddress.text,
-                              comment: _comment.text,
-                              organisationName: value["organisationName"])
-                          .toMap(),
-                    );
+                ref.set(
+                  Procurement(
+                          procurementType: procurementType == ProcurementType.Auction ? "auction" : "fixed",
+                          name: _name.text,
+                          quantity: _quantity.text,
+                          price: _price.text,
+                          currency: _currency.text,
+                          paymentMethod: _paymentMethod.text,
+                          productType: _productType.text,
+                          endDate: _endDate.text,
+                          deliveryAddress: _deliveryAddress.text,
+                          comment: _comment.text,
+                          organisationName: value["organisationName"])
+                      .toMap(),
+                );
               });
 
               showAlert('Данные изменены');

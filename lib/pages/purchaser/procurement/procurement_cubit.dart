@@ -5,23 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:marketplace/shared/data/procurement.dart';
 
 class ProcurementCubit extends Cubit<ProcurementState> {
-  ProcurementCubit(this.id) : super(ProcurementStateLoading()) {
+  ProcurementCubit(this.ref) : super(ProcurementStateLoading()) {
     get();
   }
 
-  String id;
+  DocumentReference<Map<String, dynamic>> ref;
 
   void get() async {
-    await FirebaseFirestore.instance
-        .collection('purchasers')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('procurements')
-        .doc(id)
-        .get()
-        .then((value) {
+    await ref.get().then((value) {
       if (value.exists) {
         Procurement procurement = Procurement.fromMap(value.data()!);
-        emit(ProcurementStateLoaded(procurement: procurement, id: id));
+        emit(ProcurementStateLoaded(procurement: procurement, ref: ref));
       }
     });
   }
@@ -33,9 +27,9 @@ class ProcurementStateLoading extends ProcurementState {}
 
 class ProcurementStateLoaded extends ProcurementState {
   Procurement procurement;
-  String id;
+  DocumentReference<Map<String, dynamic>> ref;
   ProcurementStateLoaded({
     required this.procurement,
-    required this.id,
+    required this.ref,
   });
 }

@@ -125,16 +125,15 @@ class _ProcurementListItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(19),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.20),
-                    blurRadius: 10,
-                  ),
-                ],
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.20),
+                //     blurRadius: 10,
+                //   ),
+                // ],
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 25),
               height: 85,
-              width: 250,
+              width: 130,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
