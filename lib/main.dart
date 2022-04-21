@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Monserrat',
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: Color.fromRGBO(250, 250, 250, 1),
           pageTransitionsTheme: PageTransitionsTheme(builders: {
             for (var entry in TargetPlatform.values) entry: CustomPageTransitionsBuilder(),
           }),
