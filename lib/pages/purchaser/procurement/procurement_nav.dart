@@ -26,7 +26,7 @@ class _ProcurementNavState extends State<ProcurementNav> {
   }
 
   initInfo() async {
-    FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) {
+    FirebaseFirestore.instance.collection('purchasers').doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) {
       setState(() {
         itin = value["itin"];
         organisationName = value["organisationName"];
@@ -49,7 +49,7 @@ class _ProcurementNavState extends State<ProcurementNav> {
               SizedBox(
                 width: 60,
                 height: 60,
-                child: Image.asset(logoPath, isAntiAlias: true, fit: BoxFit.contain),
+                child: Image.network(logoPath, isAntiAlias: true, fit: BoxFit.contain),
               ),
               Container(width: 3),
               Column(

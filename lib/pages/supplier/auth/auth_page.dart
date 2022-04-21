@@ -46,12 +46,19 @@ class _AuthPageState extends State<AuthPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: Row()),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.network(waveLT, isAntiAlias: true, fit: BoxFit.contain),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // AspectRatio(aspectRatio: _vid2controller.value.aspectRatio, child: VideoPlayer(_vid2controller)),
+                    Image.network(waveRB, isAntiAlias: true, fit: BoxFit.contain),
                   ],
                 ),
               ),
@@ -81,7 +88,7 @@ class _AuthPageState extends State<AuthPage> {
                       SizedBox(
                         width: 62,
                         height: 62,
-                        child: Image.asset(logoPath, isAntiAlias: true, fit: BoxFit.contain),
+                        child: Image.network(logoPath, isAntiAlias: true, fit: BoxFit.contain),
                       ),
                       Container(width: 3),
                       const Text('Торги', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 47))
@@ -90,7 +97,7 @@ class _AuthPageState extends State<AuthPage> {
                 ),
               ),
               Container(height: 20),
-              const Text('Регистрация',
+              const Text('Вход в кабинет исполнителя',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 35, color: Color.fromRGBO(49, 49, 49, 1))),
               Container(height: 20),
@@ -195,9 +202,11 @@ class _AuthPageState extends State<AuthPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(context, '/');
+                          },
                           child: const Text(
-                            'Забыли пароль?',
+                            'На гавную',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color.fromRGBO(181, 181, 181, 1),

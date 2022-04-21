@@ -13,6 +13,7 @@ import 'package:marketplace/pages/supplier/procurement/procurement_info_page.dar
 import 'package:marketplace/pages/supplier/procurement/procurement_offers_page.dart';
 import 'package:marketplace/pages/supplier/procurements/procurements_cubit.dart';
 import 'package:marketplace/pages/supplier/procurements/procurements_page.dart';
+import 'package:marketplace/pages/supplier/profile/profile_page.dart';
 import 'package:marketplace/pages/supplier/register/register_cubit.dart';
 import 'package:marketplace/pages/supplier/register/register_page.dart';
 import 'package:marketplace/router/router.dart';
@@ -43,6 +44,8 @@ Route<dynamic>? supplierRoutGenerator(RouteSettings settings) {
     }
   } else {
     switch (nonSupplierPath) {
+      case '/profile':
+        return MaterialPageRoute(builder: (_) => const ProfilePage(), settings: settings);
       case '/procurements':
         return MaterialPageRoute(
             builder: (_) => BlocProvider(create: (c) => ProcurementsCubit(), child: const ProcurementsPage()),

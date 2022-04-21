@@ -48,7 +48,7 @@ class _SideNavPurchaserState extends State<SideNavPurchaser> {
               SizedBox(
                 width: 60,
                 height: 60,
-                child: Image.asset(logoPath, isAntiAlias: true, fit: BoxFit.contain),
+                child: Image.network(logoPath, isAntiAlias: true, fit: BoxFit.contain),
               ),
               Container(width: 3),
               Column(

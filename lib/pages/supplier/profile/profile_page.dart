@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:marketplace/shared/div.dart';
 import 'package:marketplace/shared/side_nav_purchaser.dart';
+import 'package:marketplace/shared/side_nav_supplier.dart';
 import 'package:marketplace/show_alert.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -13,7 +14,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: [
-          const SideNavPurchaser(),
+          const SideNavSupplier(),
           Expanded(
               child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 100),
@@ -44,7 +45,7 @@ class _ProfileSectionState extends State<_ProfileSection> {
     // TODO: implement initState
     super.initState();
 
-    FirebaseFirestore.instance.collection('purchasers').doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) {
+    FirebaseFirestore.instance.collection('suppliers').doc(FirebaseAuth.instance.currentUser!.uid).get().then((value) {
       setState(() {
         _name.text = value["name"];
         _surname.text = value['surname'];
@@ -87,7 +88,7 @@ class _ProfileSectionState extends State<_ProfileSection> {
           Expanded(child: Container()),
           GestureDetector(
             onTap: () {
-              FirebaseFirestore.instance.collection('purchasers').doc(FirebaseAuth.instance.currentUser!.uid).update({
+              FirebaseFirestore.instance.collection('suppliers').doc(FirebaseAuth.instance.currentUser!.uid).update({
                 'name': _name.text,
                 'surname': _surname.text,
                 'lastName': _lastName.text,

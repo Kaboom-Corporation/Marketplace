@@ -404,7 +404,7 @@ class _ProcurementFrameState extends State<ProcurementFrame> {
           GestureDetector(
             onTap: () {
               FirebaseFirestore.instance
-                  .collection('users')
+                  .collection('purchasers')
                   .doc(FirebaseAuth.instance.currentUser!.uid)
                   .get()
                   .then((value) {

@@ -51,10 +51,7 @@ Route<dynamic>? purchaserRoutGenerator(RouteSettings settings) {
       case '/add_procurement':
         return MaterialPageRoute(builder: (_) => const ProcurementAddPage(), settings: settings);
       case '/profile':
-        return MaterialPageRoute(
-          builder: (_) => const ProfilePage(),
-          settings: settings,
-        );
+        return MaterialPageRoute(builder: (_) => const ProfilePage(), settings: settings);
       case '/procurement-info':
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
