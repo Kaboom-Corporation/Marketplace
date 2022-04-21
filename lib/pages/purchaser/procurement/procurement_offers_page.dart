@@ -41,7 +41,7 @@ class _OffersSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: const [
-              Text('Пердложения', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 50)),
+              Text('Предложения', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 50)),
             ],
           ),
           Container(height: 30),

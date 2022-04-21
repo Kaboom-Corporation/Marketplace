@@ -206,7 +206,7 @@ class _AuthPageState extends State<AuthPage> {
                             Navigator.pushNamed(context, '/');
                           },
                           child: const Text(
-                            'На гавную',
+                            'На главную',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color.fromRGBO(181, 181, 181, 1),

@@ -44,7 +44,7 @@ class _OffersSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Пердложения', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 50)),
+              const Text('Предложения', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 50)),
               GestureDetector(
                 onTap: () async {
                   await showAddOffer(
