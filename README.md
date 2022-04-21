@@ -3,7 +3,7 @@
 <div align="right">
     <p>
         <a href="https://market.kaboom.pro">
-            <img src="https://github.com/Kaboom-Corporation/Marketplace/Informations/LogoFull.png" alt="Logo">
+            <img src="https://github.com/Kaboom-Corporation/Marketplace/blob/master/Informations/LogoFull.png?raw=true" alt="Logo">
         </a>
     </p>
 </div>
