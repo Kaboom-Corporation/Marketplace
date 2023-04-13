@@ -1,6 +1,6 @@
 # Торги
 Электронная площадка.
-<div align="right">
+<div align="center">
  <p>
  <a href="https://onboarding.kaboom.pro">
  <img src="https://avatars.githubusercontent.com/u/130348646?s=400&u=d2b76f93fac5bf2d3a10477293770d1b2cf71f7e&v=4" alt="Logo">
